@@ -24,7 +24,7 @@ const player = new Player({
 const duck = new Duck({
     position:{
         x: 50,
-        y: 50
+        y: 10
     }
 });
 
@@ -37,7 +37,8 @@ const egg = new Egg({
 
 const animate = ()=>{
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ground();
+    line(0, 110, canvas.width, 110);
+    line(0, 650, canvas.width, 650);
     player.draw(ctx);
     duck.draw(ctx);
     egg.draw(ctx);
@@ -47,10 +48,10 @@ const animate = ()=>{
     requestAnimationFrame(animate);
 };
 
-const ground = ()=>{
+const line = (x1,y1, x2, y2)=>{
     ctx.beginPath();
-    ctx.moveTo(0,650);
-    ctx.lineTo(canvas.width, 650);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
     ctx.stroke();  
     ctx.closePath(); 
 };
