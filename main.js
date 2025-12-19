@@ -14,6 +14,21 @@ canvas.height = window.innerHeight;
 
 let ctx = canvas.getContext("2d");
 
+let hasStarted = false;
+const gameStart = () => {
+        animate();
+        console.log("game STARTTTT");
+        window.removeEventListener("keydown", gameStart)
+};
+
+if(!hasStarted){
+    hasStarted = true;
+    ctx.font = "50px Arial";
+    ctx.fillText("Press any key to start", canvas.width/2-250, canvas.height/2, 500);
+    window.addEventListener("keydown", gameStart);
+}
+
+
 const player = new Player({
     position: {
         x: canvas.width/2-50,
@@ -21,11 +36,27 @@ const player = new Player({
     }
 });
 
-const duck = new Duck({
+const duck1 = new Duck({
     position:{
         x: 50,
         y: 10
-    }
+    },
+    velocity:{
+        x: 1,
+        y: 1
+    },
+    color: "orange"
+});
+const duck2 = new Duck({
+    position:{
+        x: 200,
+        y: 10
+    },
+    velocity:{
+        x: 0.5,
+        y: 1
+    },
+    color: "red"
 });
 
 const egg = new Egg({
@@ -40,15 +71,22 @@ const animate = ()=>{
     line(0, 110, canvas.width, 110);
     line(0, 650, canvas.width, 650);
     player.draw(ctx);
-    duck.draw(ctx);
+    duck2.draw(ctx);
+    duck1.draw(ctx);
     egg.draw(ctx);
-    window.addEventListener("keydown",(event)=>{
-        player.move(event.key);
-    });
+    duck2.move();
+    duck1.move();
+    // window.addEventListener("keydown",(event)=>{
+    //     player.move(event.key);
+    // });
+
+    if(doesCollide(duck1,duck2)){
+        console.log("quack");
+    }
     requestAnimationFrame(animate);
 };
 
-const line = (x1,y1, x2, y2)=>{
+const line = (x1, y1, x2, y2)=>{
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
@@ -56,4 +94,8 @@ const line = (x1,y1, x2, y2)=>{
     ctx.closePath(); 
 };
 
-animate();
+const doesCollide = (box1,box2)=>{
+    let collideX = (box1.right >= box2.left && box2.right >= box1.left);
+    let collideY = (box1.bottom >= box2.top && box2.bottom >= box1.top);
+    return collideX && collideY;
+};

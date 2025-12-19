@@ -1,11 +1,22 @@
 class Entity {
-    constructor({position}){
+    constructor({position, velocity}){
         this.position = position;
-        this.velocity ={
-            x: 1,
-            y: 0
-        };
+        this.velocity = velocity;
     }
+
+    get left () {
+        return this.position.x;
+    }
+    get right () {
+        return this.position.x+this.size.width;
+    }
+    get top () {
+        return this.position.y;
+    }
+    get bottom () {
+        return this.position.y +this.size.height;
+    }
+
     draw(ctx) {
         ctx.beginPath();
         ctx.fillStyle = this.color;
@@ -16,13 +27,17 @@ class Entity {
 
 
 class Duck extends Entity {
-    constructor({position, velocity}){
+    constructor({position, velocity, color}){
         super({position, velocity});
         this.size = {
             width: 100,
             height: 100
-        }
-        this.color = "orange";
+        },
+        this.color = color;
+    }
+
+    move() {
+        this.position.x += this.velocity.x;
     }
 }
 
@@ -61,16 +76,16 @@ class Player extends Entity{
     }
 
     move(key) {
-        switch(key){
-            case "d":{
-                this.position.x+=this.velocity.x;
-                break;
-            }
-            case "a":{
-                this.position.x-=this.velocity.x;
-                break;
-            }
-        }
+        // switch(key){
+        //     case "d":{
+        //         this.position.x+=this.velocity.x;
+        //         break;   
+        //     }
+        //     case "a":{
+        //         this.position.x-=this.velocity.x;
+        //         break;
+        //     }
+        // }
     }
 }
 
